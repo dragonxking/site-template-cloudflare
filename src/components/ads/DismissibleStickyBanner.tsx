@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import { AdBanner } from "./AdBanner";
+import { adKey } from "./ad-config";
 
 /**
  * Site-wide sticky 320x50 banner (top revenue slot per course data).
@@ -12,7 +13,7 @@ import { AdBanner } from "./AdBanner";
  */
 export function DismissibleStickyBanner() {
   const [dismissed, setDismissed] = useState(false);
-  if (dismissed) return null;
+  if (dismissed || !adKey("320x50")) return null;
 
   return (
     <div className="sticky top-20 z-20 py-2">
