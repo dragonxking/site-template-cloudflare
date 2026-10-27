@@ -5,9 +5,8 @@ on:
 
 jobs:
   deploy:
-    # Never deploy from the public mirror (libin257/vvultimatum_cloudflare);
-    # template copies under other owners deploy normally with their own secrets.
-    if: github.repository_owner != 'libin257'
+    # 模板仓库本身不部署；站点仓库需配置 vars.NEXT_PUBLIC_SITE_URL 与下方 secrets。
+    if: ${{ !endsWith(github.repository, '/site-template-cloudflare') }}
     runs-on: ubuntu-latest
 
     steps:
@@ -23,11 +22,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check site configuration
+        run: |
+          if [ -z "$NEXT_PUBLIC_SITE_URL" ]; then echo "Repository variable NEXT_PUBLIC_SITE_URL is not set"; exit 1; fi
+          npm run check:site
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+
       - name: Build static export
         run: npm run build
         env:
           NODE_OPTIONS: --max-old-space-size=4096
-          NEXT_PUBLIC_SITE_URL: https://vvultimatum.sbs
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
           NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID }}
           NEXT_PUBLIC_MICROSOFT_CLARITY_ID: ${{ secrets.NEXT_PUBLIC_MICROSOFT_CLARITY_ID }}
           NEXT_PUBLIC_GOOGLE_ADSENSE_ID: ${{ secrets.NEXT_PUBLIC_GOOGLE_ADSENSE_ID }}

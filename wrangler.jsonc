@@ -1,5 +1,6 @@
 {
-  "name": "vvultimatum-sbs",
+  // 新站必须替换：name = Worker 名（建议用域名把 . 换成 -），pattern = 自定义域名（与 NEXT_PUBLIC_SITE_URL 的域名一致）。
+  "name": "example-game-site",
   "compatibility_date": "2024-09-01",
   "workers_dev": false,
   "assets": {
@@ -7,7 +8,7 @@
   },
   "routes": [
     {
-      "pattern": "vvultimatum.sbs",
+      "pattern": "example.com",
       "custom_domain": true
     }
   ]
