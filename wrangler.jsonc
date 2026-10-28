@@ -3,8 +3,10 @@
   "name": "example-game-site",
   "compatibility_date": "2024-09-01",
   "workers_dev": false,
+  // not_found_handling 必须保留：Workers 静态资源默认对未知路径返回 0 字节空白 404，开启后才会使用构建出的 404.html。
   "assets": {
-    "directory": "./out"
+    "directory": "./out",
+    "not_found_handling": "404-page"
   },
   "routes": [
     {
